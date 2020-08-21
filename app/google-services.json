@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "229900767831",
+    "firebase_url": "https://github-user-92bf1.firebaseio.com",
+    "project_id": "github-user-92bf1",
+    "storage_bucket": "github-user-92bf1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:229900767831:android:182d848383d7fdb5c3c912",
+        "android_client_info": {
+          "package_name": "com.zgenit.github_user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "229900767831-tk3kmkih6brro6i53a8n3e3sutaha2hh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCa8FnCMDRrK_gXBF7bQ44CphaUHT-ZAQg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "229900767831-tk3kmkih6brro6i53a8n3e3sutaha2hh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

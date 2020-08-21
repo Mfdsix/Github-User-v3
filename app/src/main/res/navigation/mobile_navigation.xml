@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_setting"
-        android:name="com.zgenit.github_user.ui.notifications.SettingFragment"
+        android:name="com.zgenit.github_user.ui.setting.SettingFragment"
         android:label="@string/menu_setting"
         tools:layout="@layout/fragment_setting" />
 </navigation>

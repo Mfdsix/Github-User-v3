@@ -1,22 +1,23 @@
 package com.zgenit.github_user.ui.profile
 
 import android.content.ContentValues
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.zgenit.github_user.R
 import com.zgenit.github_user.adapter.FollowersPagerAdapter
 import com.zgenit.github_user.db.DatabaseContract.GithubUserColumns.Companion.AVATAR
+import com.zgenit.github_user.db.DatabaseContract.GithubUserColumns.Companion.CONTENT_URI
 import com.zgenit.github_user.db.DatabaseContract.GithubUserColumns.Companion.NODE_ID
 import com.zgenit.github_user.db.DatabaseContract.GithubUserColumns.Companion.USERNAME
 import com.zgenit.github_user.db.DatabaseContract.GithubUserColumns.Companion.USER_ID
-import com.zgenit.github_user.db.FavoriteUserHelper
 import com.zgenit.github_user.model.GithubUser
 import com.zgenit.github_user.model.GithubUserDetail
+import com.zgenit.github_user.provider.FavoriteUserProvider
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.include_alert.*
 import kotlinx.android.synthetic.main.include_loading.*
@@ -26,7 +27,7 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var profileViewModel: ProfileViewModel
     private var githubUser: GithubUser?= null
     private var githubUserDetail: GithubUserDetail ?= null
-    private lateinit var favoriteUserHelper: FavoriteUserHelper
+    private lateinit var favoriteUserProvider: FavoriteUserProvider
     private var isFavorite = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,20 +38,19 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.setTitle(R.string.user_profile)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        favoriteUserProvider = FavoriteUserProvider()
+        favoriteUserProvider.onCreate()
+
         setViewVisibility(0)
         val bundle: Bundle? = intent.extras
         if(bundle != null){
             githubUser = bundle.getParcelable("user")!!
         }
 
-        // sqlite database
-        favoriteUserHelper = FavoriteUserHelper.getInstance(applicationContext)
-        favoriteUserHelper.open()
-
         // view model
         profileViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(ProfileViewModel::class.java)
         profileViewModel.setUsers(githubUser?.username?: "", getString(R.string.github_token))
-        profileViewModel.getUsers().observe(this, Observer {
+        profileViewModel.getUsers().observe(this, {
             with(it){
                 when(status){
                     200 -> {
@@ -96,7 +96,7 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
     }
     
     private fun setFavoriteStatus(){
-        isFavorite = favoriteUserHelper.isExists(githubUserDetail?.id?: 0)
+        isFavorite = favoriteUserProvider.isExists(CONTENT_URI, githubUserDetail?.id?: 0)
         if(isFavorite) {
             fab_favorite.setImageResource(R.drawable.ic_favorite)
         }else{
@@ -108,12 +108,9 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
     private fun toggleFavorite(){
         fab_favorite.isEnabled = false
         if(isFavorite) {
-            val result = favoriteUserHelper.delete(githubUserDetail?.id?: 0)
-            if(result > 0){
-                Toast.makeText(applicationContext, R.string.message_favorite_delete_success, Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(applicationContext, R.string.message_something_wrong, Toast.LENGTH_SHORT).show()
-            }
+            val uriWithId = Uri.parse("$CONTENT_URI/${githubUserDetail?.id ?: 0}")
+            favoriteUserProvider.delete(uriWithId, null, null)
+            Toast.makeText(applicationContext, R.string.message_favorite_delete_success, Toast.LENGTH_SHORT).show()
         }else{
             val values = ContentValues()
             values.put(USER_ID, githubUserDetail?.id?: 0)
@@ -121,12 +118,8 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
             values.put(NODE_ID, githubUserDetail?.nodeId?: "")
             values.put(AVATAR, githubUserDetail?.avatar?: "")
 
-            val result = favoriteUserHelper.insert(values)
-            if(result > 0){
-                Toast.makeText(applicationContext, R.string.message_favorite_add_success, Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(applicationContext, R.string.message_something_wrong, Toast.LENGTH_SHORT).show()
-            }
+            favoriteUserProvider.insert(CONTENT_URI, values)
+            Toast.makeText(applicationContext, R.string.message_favorite_add_success, Toast.LENGTH_SHORT).show()
         }
         setFavoriteStatus()
     }
@@ -157,11 +150,6 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return super.onSupportNavigateUp()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        favoriteUserHelper.close()
     }
 
     override fun onClick(p0: View?) {

@@ -50,6 +50,19 @@ class FavoriteUserHelper(context: Context) {
         )
     }
 
+    fun getById(userId: String): Cursor{
+        return database.query(
+            DATABASE_TABLE,
+            null,
+            "$USER_ID = ?",
+            arrayOf(userId),
+            null,
+            null,
+            null,
+            null
+        )
+    }
+
     fun insert(values: ContentValues): Long{
         return database.insert(DATABASE_TABLE, null, values)
     }

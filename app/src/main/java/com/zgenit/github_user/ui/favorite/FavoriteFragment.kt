@@ -1,7 +1,11 @@
 package com.zgenit.github_user.ui.favorite
 
+import android.content.Context
 import android.content.Intent
+import android.database.ContentObserver
 import android.os.Bundle
+import android.os.Handler
+import android.os.HandlerThread
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.zgenit.github_user.MainActivity
 import com.zgenit.github_user.R
 import com.zgenit.github_user.adapter.FavoriteUserAdapter
+import com.zgenit.github_user.db.DatabaseContract.GithubUserColumns.Companion.CONTENT_URI
 import com.zgenit.github_user.db.FavoriteUserHelper
 import com.zgenit.github_user.model.GithubUser
 import com.zgenit.github_user.ui.profile.ProfileActivity
@@ -22,13 +27,13 @@ import kotlinx.android.synthetic.main.fragment_favorite.*
 import kotlinx.android.synthetic.main.include_alert.*
 import kotlinx.android.synthetic.main.include_loading.*
 import kotlinx.android.synthetic.main.include_toolbar.*
-import java.text.FieldPosition
 
 class FavoriteFragment : Fragment() {
 
     private lateinit var favoriteViewModel: FavoriteViewModel
     private lateinit var favoriteUserHelper: FavoriteUserHelper
     private lateinit var adapter: FavoriteUserAdapter
+    private lateinit var ctx: Context
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -46,8 +51,9 @@ class FavoriteFragment : Fragment() {
 
         (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
         toolbar.setTitle(R.string.title_favorite)
+        ctx = (context as MainActivity)
 
-        favoriteUserHelper = FavoriteUserHelper.getInstance((context as MainActivity))
+        favoriteUserHelper = FavoriteUserHelper.getInstance(ctx)
         favoriteUserHelper.open()
 
         setViewVisibility(0)
@@ -65,7 +71,17 @@ class FavoriteFragment : Fragment() {
         rv_favorite_users.layoutManager = LinearLayoutManager(context)
         rv_favorite_users.adapter = adapter
 
-        favoriteViewModel.setUsers(favoriteUserHelper)
+        val handlerThread = HandlerThread("DataObserver")
+        handlerThread.start()
+        val handler = Handler(handlerThread.looper)
+        val myObserver = object : ContentObserver(handler) {
+            override fun onChange(self: Boolean) {
+                favoriteViewModel.setUsers(ctx.contentResolver)
+            }
+        }
+        context?.contentResolver?.registerContentObserver(CONTENT_URI, true, myObserver)
+
+        favoriteViewModel.setUsers((context as MainActivity).contentResolver)
         favoriteViewModel.getUsers().observe((context as MainActivity), Observer {
             with(it) {
                 when (status) {
@@ -105,7 +121,7 @@ class FavoriteFragment : Fragment() {
                 if(result > 0){
                     adapter.removeItem(position)
                     Toast.makeText(context, R.string.message_favorite_delete_success, Toast.LENGTH_SHORT).show()
-                    favoriteViewModel.setUsers(favoriteUserHelper)
+                    favoriteViewModel.setUsers((context as MainActivity).contentResolver)
                 }else{
                     Toast.makeText(context, R.string.message_something_wrong, Toast.LENGTH_SHORT).show()
                 }
