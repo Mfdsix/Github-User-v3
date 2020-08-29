@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pengguna Github</string>
+    <string name="menu_home">Beranda</string>
+    <string name="menu_favorite">Favorit</string>
+    <string name="menu_setting">Pengaturan</string>
+    <string name="alert_image">gambar pemberitahuan</string>
+    <string name="search_github_user">Cari Pengguna Github</string>
+    <string name="search">cari</string>
+    <string name="message_user_not_found">Pengguna Tidak Ditemukan</string>
+    <string name="icon_user_location">ikon lokasi pengguna</string>
+    <string name="icon_user_office">ikon kantor pengguna</string>
+    <string name="icon_user_repositories">ikon repositori pengguna</string>
+    <string name="icon_user_following">ikon diikuti pengguna</string>
+    <string name="icon_user_followers">icon mengikuti pengguna</string>
+    <string name="user_profile">Profil Pengguna</string>
+    <string name="tab_follower">Pengikut</string>
+    <string name="tab_following">Mengikuti</string>
+    <string name="user_following_amount">%d mengikuti</string>
+    <string name="user_followers_amount">%d pengikut</string>
+    <string name="user_repository_amount">%d repo</string>
+    <string name="have_no_follower">Belum Punya Follower</string>
+    <string name="message_no_favorite_found">Belum Ada Pengguna Favorit</string>
+    <string name="title_favorite">Pengguna Favorit</string>
+    <string name="icon_remove">ikon hapus</string>
+    <string name="confirmation_delete">Konfirmasi Hapus</string>
+    <string name="message_confirmation_delete">Yakin ingin menghapus dari daftar favorit ?</string>
+    <string name="confirm_yes">Ya</string>
+    <string name="confirm_no">Tidak</string>
+    <string name="message_something_wrong">Ooww, terjadi kesalahan</string>
+    <string name="message_favorite_add_success">Ditambahkan ke Daftar Favorit</string>
+    <string name="message_favorite_delete_success">Dihapus dari Daftar Favorit</string>
+    <string name="message_alarm_set_success">Pengingat Berhasi Diaktifkan</string>
+    <string name="title_alarm_notification">Hai</string>
+    <string name="message_alarm_notification">Buka aplikasi github sekarang yuk</string>
+    <string name="set_language">Ganti Bahasa</string>
+    <string name="icon_right">ikon kanan</string>
+    <string name="accept_daily_notification">Terima Pengingat Harian ?</string>
+    <string name="title_setting">Pengaturan</string>
+    <string name="message_alarm_cancel_success">Pengingat Dinonaktifkan</string>
+    <string name="have_no_following">Tidak Mengikuti Siapapun</string>
+    <string name="favorite_user">Pengguna Favorit</string>
+</resources>

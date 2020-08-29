@@ -1,33 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.zgenit.github_user">
+    package="com.zgenit.githubuser">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <permission android:name="com.zgenit.github_user.READ_DATABASE" android:protectionLevel="normal"/>
-    <permission android:name="com.zgenit.github_user.WRITE_DATABASE" android:protectionLevel="normal"/>
+
+    <permission
+        android:name="com.zgenit.githubuser.READ_DATABASE"
+        android:protectionLevel="normal" />
+    <permission
+        android:name="com.zgenit.githubuser.WRITE_DATABASE"
+        android:protectionLevel="normal" />
 
     <application
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
+        <receiver android:name=".widget.FavoriteUserWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/favorite_user_widget_info" />
+        </receiver>
+
         <provider
             android:name=".provider.FavoriteUserProvider"
-            android:authorities="com.zgenit.github_user"
+            android:authorities="com.zgenit.githubuser"
             android:enabled="true"
             android:exported="true"
-            android:readPermission="com.zgenit.github_user.READ_DATABASE"
-            android:writePermission="com.zgenit.github_user.WRITE_DATABASE"/>
+            android:readPermission="com.zgenit.githubuser.READ_DATABASE"
+            android:writePermission="com.zgenit.githubuser.WRITE_DATABASE" />
+
         <receiver
             android:name=".broadcast.AlarmReceiver"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true" />
 
         <activity android:name=".ui.profile.ProfileActivity" />
         <activity
@@ -41,6 +57,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name="com.zgenit.githubuser.widget.StackWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
     </application>
 
 </manifest>

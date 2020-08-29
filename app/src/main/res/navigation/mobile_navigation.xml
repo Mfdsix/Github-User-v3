@@ -2,24 +2,23 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_home">
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.zgenit.github_user.ui.home.HomeFragment"
+        android:name="com.zgenit.githubuser.ui.home.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_favorite"
-        android:name="com.zgenit.github_user.ui.favorite.FavoriteFragment"
+        android:name="com.zgenit.githubuser.ui.favorite.FavoriteFragment"
         android:label="@string/menu_favorite"
         tools:layout="@layout/fragment_favorite" />
 
     <fragment
         android:id="@+id/navigation_setting"
-        android:name="com.zgenit.github_user.ui.setting.SettingFragment"
+        android:name="com.zgenit.githubuser.ui.setting.SettingFragment"
         android:label="@string/menu_setting"
         tools:layout="@layout/fragment_setting" />
 </navigation>

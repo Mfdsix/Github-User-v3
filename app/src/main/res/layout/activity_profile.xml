@@ -179,7 +179,7 @@
                 android:id="@+id/tab_layout"
                 android:layout_height="wrap_content"/>
 
-            <com.zgenit.github_user.custom.CustomViewPager
+            <com.zgenit.githubfavoriteuser.custom.CustomViewPager
                 android:layout_width="match_parent"
                 android:id="@+id/view_pager"
                 android:layout_height="match_parent" />

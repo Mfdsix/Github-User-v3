@@ -4,8 +4,6 @@
     <string name="menu_favorite">Favorite</string>
     <string name="menu_setting">Setting</string>
     <string name="alert_image">alert image</string>
-    <string name="github_user_avatar">github user avatar</string>
-    <string name="github_token">a4cb9857f3837750295ed4498d9a55e0827e496e</string>
     <string name="search_github_user">Search Github User</string>
     <string name="search">search</string>
     <string name="message_user_not_found">User Not Found</string>
@@ -39,4 +37,6 @@
     <string name="accept_daily_notification">Accept Daily Notification ?</string>
     <string name="title_setting">Setting</string>
     <string name="message_alarm_cancel_success">Alarm canceled successfully</string>
+    <string name="have_no_following">Not Following</string>
+    <string name="favorite_user">Favorite User</string>
 </resources>
